@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Queen Moves</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid black;
+        }
+        .queen {
+            background-color: yellow;
+        }
+        .valid-move {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <h2>Chess Queen Moves</h2>
+    <p>Chessboard with the Queen's Position</p>
+    <table id="chessboard"></table>
+    <p id="status"></p>
+
+    <script>
+        function createBoard(rows, cols, sourceRow, sourceCol, dRow, dCol) {
+            let board = document.getElementById("chessboard");
+            board.innerHTML = ""; // Clear previous board
+
+            for (let i = 0; i < rows; i++) {
+                let row = document.createElement("tr");
+                for (let j = 0; j < cols; j++) {
+                    let cell = document.createElement("td");
+                    
+                    // Mark Queen's initial position
+                    if (i === sourceRow && j === sourceCol) {
+                        cell.classList.add("queen");
+                        cell.textContent = "Q";
+                    }
+
+                    // Validate and mark the destination move
+                    if (i === dRow && j === dCol) {
+                        if (isValidMove(sourceRow, sourceCol, dRow, dCol)) {
+                            cell.classList.add("valid-move");
+                            cell.textContent = "✔";
+                            document.getElementById("status").textContent = "Valid Move";
+                        } else {
+                            document.getElementById("status").textContent = "Not a Valid Move";
+                        }
+                    }
+
+                    row.appendChild(cell);
+                }
+                board.appendChild(row);
+            }
+        }
+
+        function isValidMove(sRow, sCol, dRow, dCol) {
+            return (
+                sRow === dRow || sCol === dCol || 
+                (sRow + sCol === dRow + dCol) || 
+                (sRow - sCol === dRow - dCol)
+            );
+        }
+
+        // Chessboard dimensions
+        let rows = 5, cols = 5;
+        let sourceRow = 2, sourceCol = 1;
+        let dRow = 1, dCol = 0;
+
+        createBoard(rows, cols, sourceRow, sourceCol, dRow, dCol);
+    </script>
+</body>
+</html>
