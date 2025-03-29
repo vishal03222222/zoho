@@ -1,0 +1,90 @@
+// File: NumbericRightAngleTrianglePattern.js
+
+function generatePattern(n) {
+    let pattern = "";
+    for (let i = 1; i <= n; i++) {
+        // Print spaces
+        for (let j = i; j < n; j++) {
+            pattern += "  ";
+        }
+        // Print numbers in decreasing order
+        for (let j = i; j >= 1; j--) {
+            pattern += j + " ";
+        }
+        pattern += "\n";
+    }
+    return pattern;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("patternForm");
+    const output = document.getElementById("output");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const n = parseInt(document.getElementById("numberInput").value);
+        if (isNaN(n) || n <= 0) {
+            output.textContent = "Please enter a valid positive number.";
+            return;
+        }
+        output.textContent = generatePattern(n);
+    });
+});
+
+// File: index.html
+
+/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeric Right-Angle Triangle Pattern</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        pre { font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h2>Numeric Right-Angle Triangle Pattern</h2>
+    <form id="patternForm">
+        <label for="numberInput">Enter a number:</label>
+        <input type="number" id="numberInput" required>
+        <button type="submit">Generate Pattern</button>
+    </form>
+    <pre id="output"></pre>
+    <script>
+        function generatePattern(n) {
+            let pattern = "";
+            for (let i = 1; i <= n; i++) {
+                // Print spaces
+                for (let j = i; j < n; j++) {
+                    pattern += "  ";
+                }
+                // Print numbers in decreasing order
+                for (let j = i; j >= 1; j--) {
+                    pattern += j + " ";
+                }
+                pattern += "\n";
+            }
+            return pattern;
+        }
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("patternForm");
+            const output = document.getElementById("output");
+        
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const n = parseInt(document.getElementById("numberInput").value);
+                if (isNaN(n) || n <= 0) {
+                    output.textContent = "Please enter a valid positive number.";
+                    return;
+                }
+                output.textContent = generatePattern(n);
+            });
+        });
+    </script>
+</body>
+</html>
+*/

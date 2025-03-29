@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Day Finder</title>
+</head>
+<body>
+    <h2>Find the Day of a Given Date</h2>
+    <label for="date">Enter Date:</label>
+    <input type="number" id="date" min="1" max="31" placeholder="DD">
+    <label for="month">Enter Month:</label>
+    <input type="number" id="month" min="1" max="12" placeholder="MM">
+    <label for="year">Enter Year:</label>
+    <input type="number" id="year" placeholder="YYYY">
+    <button onclick="findDay()">Find Day</button>
+    <p id="result"></p>
+
+    <script>
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
+        
+        function findDay() {
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            let date = parseInt(document.getElementById("date").value);
+            let month = parseInt(document.getElementById("month").value);
+            let year = parseInt(document.getElementById("year").value);
+
+            if (isNaN(date) || isNaN(month) || isNaN(year)) {
+                document.getElementById("result").innerText = "Please enter a valid date.";
+                return;
+            }
+
+            const referenceDate = new Date(year, month - 1, date);
+            let dayIndex = referenceDate.getDay();
+
+            document.getElementById("result").innerText = `The day on ${date}/${month}/${year} was ${daysOfWeek[dayIndex]}.`;
+        }
+    </script>
+</body>
+</html>

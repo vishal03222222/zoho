@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Length Adjuster</title>
+</head>
+<body>
+    <h2>Screen Length Adjuster</h2>
+    <label for="sentence">Enter Sentence:</label>
+    <input type="text" id="sentence" value="Today is wednesda">
+    <br>
+    <label for="screenLength">Enter Screen Length:</label>
+    <input type="number" id="screenLength" value="20">
+    <br>
+    <button onclick="adjustSpaces()">Adjust Spaces</button>
+    <p>Adjusted Sentence: <span id="result"></span></p>
+
+    <script>
+        function spaceCountHandler(sentence) {
+            return (sentence.match(/ /g) || []).length;
+        }
+
+        function addSpaceHandler(sentence, addSpaceValue, remainingCount, spaceCount) {
+            let sentenceLen = sentence.length;
+            let temp = "";
+            let spaceVal = addSpaceValue;
+            let flag = spaceCount;
+
+            for (let i = 0; i < sentenceLen; i++) {
+                if (sentence[i] !== ' ')
+                    temp += sentence[i];
+                else {
+                    if (remainingCount % spaceCount !== 0 && flag === spaceCount) {
+                        spaceVal++;
+                    } else spaceVal = addSpaceValue;
+
+                    temp += '*'.repeat(spaceVal + 1);
+                    flag--;
+                }
+            }
+            return temp;
+        }
+
+        function adjustSpaces() {
+            let sentence = document.getElementById("sentence").value;
+            let screenLength = parseInt(document.getElementById("screenLength").value);
+
+            let spaceCount = spaceCountHandler(sentence);
+            let remainingCount = screenLength - sentence.length;
+            let addSpaceValue = Math.floor(remainingCount / spaceCount);
+            
+            let newString = addSpaceHandler(sentence, addSpaceValue, remainingCount, spaceCount);
+            document.getElementById("result").textContent = newString;
+        }
+    </script>
+</body>
+</html>

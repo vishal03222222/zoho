@@ -1,0 +1,52 @@
+<!-- File: index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Pattern with Word</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        pre {
+            font-size: 20px;
+            font-weight: bold;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <h1>X Pattern Generator</h1>
+    <input type="text" id="wordInput" placeholder="Enter an odd-length word">
+    <button onclick="generatePattern()">Generate Pattern</button>
+    <pre id="output"></pre>
+
+    <script>
+        function printXPattern(word) {
+            if (word.length % 2 === 0) {
+                document.getElementById("output").innerText = "Input word length should be odd.";
+                return;
+            }
+            
+            const n = word.length;
+            let pattern = "";
+            for (let i = 0; i < n; i++) {
+                let row = "";
+                for (let j = 0; j < n; j++) {
+                    row += (i === j || j === (n - 1 - i)) ? word[i] : " ";
+                }
+                pattern += row + "\n";
+            }
+            document.getElementById("output").innerText = pattern;
+        }
+
+        function generatePattern() {
+            const inputWord = document.getElementById("wordInput").value;
+            printXPattern(inputWord);
+        }
+    </script>
+</body>
+</html>
