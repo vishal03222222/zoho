@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input and Display</title>
+</head>
+<body>
+    <h2>Enter a Number</h2>
+    <input type="number" id="userInput" placeholder="Enter a number">
+    <button onclick="displayMessage()">Submit</button>
+    <p id="output"></p>
+
+    <script>
+        function displayMessage() {
+            let inputValue = document.getElementById("userInput").value;
+            document.getElementById("output").innerText = "pradeep" + inputValue;
+        }
+    </script>
+</body>
+</html>
