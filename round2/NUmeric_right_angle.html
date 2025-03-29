@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeric Right Angle Triangle Pattern</title>
+    <style>
+        pre { font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h2>Numeric Right Angle Triangle Pattern</h2>
+    <pre id="pattern"></pre>
+
+    <script>
+        function generatePattern(n) {
+            let output = "";
+            for (let i = 1; i <= n; i++) {
+                output += "  ".repeat(n - i); // Adding spaces
+                for (let j = i; j >= 1; j--) {
+                    output += j + " ";
+                }
+                output += "\n";
+            }
+            return output;
+        }
+
+        let n = 5; // Input
+        document.getElementById("pattern").textContent = generatePattern(n);
+    </script>
+</body>
+</html>

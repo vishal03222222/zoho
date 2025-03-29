@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Staircase Pattern</title>
+    <style>
+        pre { font-family: monospace; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h2>Number Staircase Pattern</h2>
+    <pre id="output"></pre>
+    <script>
+        function generateNumberStaircase(n) {
+            let output = "";
+            let flag = 1;
+            for (let i = 1; i <= n; i++) {
+                let count = flag;
+                for (let j = 1; j <= n; j++) {
+                    count = count > n ? count - n : count;
+                    output += count + " ";
+                    count++;
+                }
+                flag++;
+                output += "\n";
+            }
+            return output;
+        }
+
+        document.getElementById("output").innerText = generateNumberStaircase(5);
+    </script>
+</body>
+</html>

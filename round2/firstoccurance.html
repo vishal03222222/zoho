@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Occurrences</title>
+</head>
+<body>
+    <h2>First Occurrences</h2>
+    <p>Original String: <strong>ZOHOCORPORATION</strong></p>
+    <p>Search String: <strong>PORT</strong></p>
+    <p>Substring Output: <span id="result"></span></p>
+
+    <script>
+        function subString(str, start, end) {
+            return str.substring(start, end + 1);
+        }
+
+        function findFirstOccurrences(s1, s2) {
+            let min = Number.MAX_VALUE, max = Number.MIN_VALUE;
+
+            for (let i = 0; i < s2.length; i++) {
+                let val = s1.indexOf(s2[i]);
+                if (val !== -1) {
+                    min = Math.min(min, val);
+                    max = Math.max(max, val);
+                }
+            }
+            return subString(s1, min, max);
+        }
+
+        let s1 = "ZOHOCORPORATION";
+        let s2 = "PORT";
+        let result = findFirstOccurrences(s1, s2);
+
+        document.getElementById("result").textContent = result;
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeric Diamond Pattern</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
+        pre { font-family: monospace; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <pre id="app"></pre>
+    <script >
+        function generateDiamondPattern(n) {
+            let output = "";
+            let count = 0;
+            
+            // Upper half
+            for (let i = 1; i <= n; i++) {
+                output += "&nbsp;".repeat((n - i) * 2);
+                count += i;
+                for (let j = 1; j <= i; j++) {
+                    output += count + " ";
+                    if (j < i) count--; 
+                    else count += i - 1;
+                }
+                output += "<br>";
+            }
+            
+            // Lower half
+            for (let i = 1; i <= n; i++) {
+                output += "&nbsp;".repeat((i - 1) * 2);
+                for (let j = i; j <= n; j++) {
+                    output += count + " ";
+                    count--;
+                }
+                output += "<br>";
+            }
+            
+            return output;
+        }
+        
+        // Render pattern
+        window.onload = function() {
+            const app = document.getElementById("app");
+            const pattern = generateDiamondPattern(4);
+            app.innerHTML = pattern;
+        };
+    </script>
+</body>
+</html>
