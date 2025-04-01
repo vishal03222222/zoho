@@ -11,6 +11,22 @@
 <body>
     <h2>Numeric Right Angle Triangle Pattern</h2>
     <pre id="pattern"></pre>
+<script>
+    function rightanlge(n){
+        let output="";
+        for(let i=1;i<=n;i++){
+            output+="".repeat(n-i);
+            for(let j=i;j>=1;j++){
+                output+=j +""
+
+            }
+            output += "\n";
+        }
+        return output;
+
+    }
+    rightanlge(5)
+</script>
 
     <script>
         function generatePattern(n) {

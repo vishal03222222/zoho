@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway Reservation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        input, select, button {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+        }
+        .lists {
+            display: flex;
+            justify-content: space-between;
+        }
+        .list {
+            width: 45%;
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+        .list h3 {
+            background: #007bff;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .ticket {
+            background: #333;
+            color: white;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🚆 Railway Reservation System</h2>
+        <input type="text" id="name" placeholder="Enter Name">
+        <input type="number" id="age" placeholder="Enter Age">
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <select id="preference">
+            <option value="Lower">Lower</option>
+            <option value="Middle">Middle</option>
+            <option value="Upper">Upper</option>
+            <option value="Side-Lower">Side-Lower</option>
+            <option value="Side-Upper">Side-Upper</option>
+        </select>
+        <button onclick="bookTicket()">🎟️ Book Ticket</button>
+        <button onclick="cancelTicket()">❌ Cancel Ticket</button>
+
+        <h3>🎟️ Available Tickets:</h3>
+        <p id="availableTickets"></p>
+
+        <div class="lists">
+            <div class="list">
+                <h3>✅ Confirmed Tickets</h3>
+                <div id="confirmedList"></div>
+            </div>
+            <div class="list">
+                <h3>🟠 RAC Tickets</h3>
+                <div id="racList"></div>
+            </div>
+        </div>
+
+        <div class="list" style="margin-top: 10px;">
+            <h3>🟡 Waiting List</h3>
+            <div id="waitingList"></div>
+        </div>
+    </div>
+
+    <script>
+        class Passenger {
+            constructor(name, age, gender, preference) {
+                this.name = name;
+                this.age = age;
+                this.gender = gender;
+                this.preference = preference;
+                this.allocatedBerth = null;
+            }
+        }
+
+        class RailwayReservation {
+            constructor() {
+                this.berths = { 'Lower': 21, 'Middle': 21, 'Upper': 21, 'Side-Lower': 9, 'Side-Upper': 9 };
+                this.racTickets = 9;
+                this.waitingList = 10;
+                this.confirmedPassengers = [];
+                this.racPassengers = [];
+                this.waitingListPassengers = [];
+                this.childPassengers = [];
+            }
+
+            bookTicket(name, age, gender, preference) {
+                if (age < 5) {
+                    this.childPassengers.push(new Passenger(name, age, gender, preference));
+                    alert(`${name} (age ${age}) is below 5. No ticket allocated.`);
+                    return;
+                }
+
+                let berthType = preference;
+                if (age > 60 || (gender === 'Female' && preference === 'Lower')) {
+                    berthType = this.berths['Lower'] > 0 ? 'Lower' : preference;
+                }
+
+                if (this.berths[berthType] > 0) {
+                    this.berths[berthType]--;
+                    let passenger = new Passenger(name, age, gender, berthType);
+                    passenger.allocatedBerth = berthType;
+                    this.confirmedPassengers.push(passenger);
+                    alert(`✅ Ticket confirmed for ${name} in ${berthType} berth.`);
+                } else if (this.racTickets > 0) {
+                    this.racTickets--;
+                    let passenger = new Passenger(name, age, gender, "RAC");
+                    this.racPassengers.push(passenger);
+                    alert(`🟠 ${name} is placed in RAC.`);
+                } else if (this.waitingList > 0) {
+                    this.waitingList--;
+                    let passenger = new Passenger(name, age, gender, "Waiting List");
+                    this.waitingListPassengers.push(passenger);
+                    alert(`🟡 ${name} is placed in Waiting List.`);
+                } else {
+                    alert("❌ No tickets available.");
+                }
+                this.updateUI();
+            }
+
+            cancelTicket(name) {
+                let index = this.confirmedPassengers.findIndex(p => p.name === name);
+                if (index !== -1) {
+                    let passenger = this.confirmedPassengers.splice(index, 1)[0];
+                    this.berths[passenger.allocatedBerth]++;
+                    alert(`🛑 ${name}'s ticket is canceled.`);
+
+                    if (this.racPassengers.length > 0) {
+                        let movedPassenger = this.racPassengers.shift();
+                        movedPassenger.allocatedBerth = "Side-Lower";
+                        this.confirmedPassengers.push(movedPassenger);
+                        this.berths["Side-Lower"]--;
+                        this.racTickets++;
+                        alert(`✅ ${movedPassenger.name} moved from RAC to confirmed.`);
+                    }
+
+                    if (this.waitingListPassengers.length > 0) {
+                        let movedWaiting = this.waitingListPassengers.shift();
+                        movedWaiting.allocatedBerth = "RAC";
+                        this.racPassengers.push(movedWaiting);
+                        this.waitingList++;
+                        this.racTickets--;
+                        alert(`🟠 ${movedWaiting.name} moved from Waiting List to RAC.`);
+                    }
+                } else {
+                    alert("❌ Passenger not found.");
+                }
+                this.updateUI();
+            }
+
+            updateUI() {
+                document.getElementById("confirmedList").innerHTML = this.confirmedPassengers.map(p => 
+                    `<div class="ticket">${p.name} | ${p.age} | ${p.gender} | ${p.allocatedBerth}</div>`
+                ).join("");
+
+                document.getElementById("racList").innerHTML = this.racPassengers.map(p => 
+                    `<div class="ticket">${p.name} | ${p.age} | ${p.gender} | RAC</div>`
+                ).join("");
+
+                document.getElementById("waitingList").innerHTML = this.waitingListPassengers.map(p => 
+                    `<div class="ticket">${p.name} | ${p.age} | ${p.gender} | Waiting</div>`
+                ).join("");
+
+                document.getElementById("availableTickets").innerHTML = 
+                    `Lower: ${this.berths.Lower}, Middle: ${this.berths.Middle}, Upper: ${this.berths.Upper}, ` +
+                    `Side-Lower: ${this.berths["Side-Lower"]}, Side-Upper: ${this.berths["Side-Upper"]}, ` +
+                    `RAC: ${this.racTickets}, Waiting: ${this.waitingList}`;
+            }
+        }
+
+        const railway = new RailwayReservation();
+
+        function bookTicket() {
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
+            const gender = document.getElementById("gender").value;
+            const preference = document.getElementById("preference").value;
+            railway.bookTicket(name, age, gender, preference);
+        }
+
+        function cancelTicket() {
+            const name = prompt("Enter name to cancel ticket:");
+            railway.cancelTicket(name);
+        }
+    </script>
+
+</body>
+</html>
