@@ -1,0 +1,60 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function MOvezero(arr){
+            var result=[];
+            let count=0
+            arr.map((i)=>{
+                if(i !== 0 ){
+                    result.push(i);
+                    
+                }
+                else{
+                    result[-1].a=0;
+                }
+               
+
+            })
+            
+           
+            console.log(result)
+
+        }
+        const arr=[1,2,0,0,0,0,3,0,2,30,]
+        MOvezero(arr)
+    </script>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move Zeros to End</title>
+</head>
+<body>
+    <script>
+        function moveZerosToEnd(arr) {
+            let result = arr.filter(num => num !== 0); // Extract non-zero numbers
+            let zeroCount = arr.length - result.length; // Count zeros
+
+            // Append zeros at the end
+            while (zeroCount > 0) {
+                result.push(0);
+                zeroCount--;
+            }
+
+            console.log(result);
+        }
+
+        const arr = [1, 2, 0, 0, 0, 0, 3, 0, 2, 30];
+        moveZerosToEnd(arr);
+    </script>
+</body>
+</html>

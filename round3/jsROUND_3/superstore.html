@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Store</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 50%; margin: auto; text-align: center; }
+        .product { border: 1px solid #ddd; padding: 10px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Super Store</h2>
+        <button onclick="registerUser()">Register</button>
+        <button onclick="loginUser()">Login</button>
+        <button onclick="addItem()">Add Item</button>
+        <button onclick="listInventory()">View Inventory</button>
+        <button onclick="addToCart()">Add to Cart</button>
+        <button onclick="buyItem()">Buy Item</button>
+        <button onclick="makePayment()">Make Payment</button>
+        <div id="output"></div>
+    </div>
+    
+    <script>
+        let users = [];
+        let inventory = [];
+        let cart = [];
+        
+        function registerUser() {
+            let username = prompt("Enter username:");
+            let password = prompt("Enter password:");
+            users.push({ username, password });
+            alert("User registered successfully!");
+        }
+        
+        function loginUser() {
+            let username = prompt("Enter username:");
+            let password = prompt("Enter password:");
+            let user = users.find(u => u.username === username && u.password === password);
+            if (user) alert("Login successful!");
+            else alert("Invalid credentials!");
+        }
+        
+        function addItem() {
+            let name = prompt("Enter product name:");
+            let price = parseFloat(prompt("Enter product price:"));
+            let quantity = parseInt(prompt("Enter quantity:"));
+            inventory.push({ name, price, quantity });
+            alert("Item added successfully!");
+        }
+        
+        function listInventory() {
+            let output = "<h3>Inventory</h3>";
+            inventory.forEach((item, index) => {
+                output += `<div class='product'><strong>${item.name}</strong> - $${item.price} (Qty: ${item.quantity})</div>`;
+            });
+            document.getElementById("output").innerHTML = output;
+        }
+        
+        function addToCart() {
+            let itemName = prompt("Enter product name to add to cart:");
+            let item = inventory.find(i => i.name === itemName);
+            if (item && item.quantity > 0) {
+                cart.push(item);
+                alert("Item added to cart!");
+            } else {
+                alert("Item not available!");
+            }
+        }
+        
+        function buyItem() {
+            if (cart.length === 0) {
+                alert("Cart is empty!");
+                return;
+            }
+            cart.forEach(item => {
+                let inventoryItem = inventory.find(i => i.name === item.name);
+                if (inventoryItem) inventoryItem.quantity -= 1;
+            });
+            alert("Order placed successfully!");
+            cart = [];
+        }
+        
+        function makePayment() {
+            if (cart.length === 0) {
+                alert("No items to pay for!");
+                return;
+            }
+            alert("Payment successful! Order completed.");
+            cart = [];
+        }
+    </script>
+</body>
+</html>

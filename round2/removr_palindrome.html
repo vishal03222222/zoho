@@ -12,17 +12,65 @@
     <p><strong>Result:</strong> <span id="outputText"></span></p>
 
     <script>
-        function isPalindrome(word) {
-            word = word.toLowerCase();
-            return word === word.split('').reverse().join('');
+        function toLowerCase(str) {
+            let result = "";
+            for (let i = 0; i < str.length; i++) {
+                let charCode = str.charCodeAt(i);
+                // Convert uppercase A-Z (65-90) to lowercase a-z (97-122)
+                if (charCode >= 65 && charCode <= 90) {
+                    result += String.fromCharCode(charCode + 32);
+                } else {
+                    result += str[i];
+                }
+            }
+            return result;
         }
-
+        
+        function isPalindrome(word) {
+            word = toLowerCase(word);
+            let left = 0, right = word.length - 1;
+            
+            while (left < right) {
+                if (word[left] !== word[right]) {
+                    return false;
+                }
+                left++;
+                right--;
+            }
+            return true;
+        }
+        
         function removePalindromes() {
             let inputText = document.getElementById("inputText").value;
-            let words = inputText.split(" ");
-            let result = words.filter(word => !isPalindrome(word)).join(" ");
+            let words = [];
+            let word = "";
+            
+            // Manually split words from input string
+            for (let i = 0; i < inputText.length; i++) {
+                if (inputText[i] !== ' ') {
+                    word += inputText[i];
+                } else {
+                    if (word !== "") {
+                        words.push(word);
+                    }
+                    word = "";
+                }
+            }
+            if (word !== "") words.push(word); // Push last word
+        
+            let result = "";
+            
+            // Manually filter out palindrome words
+            for (let i = 0; i < words.length; i++) {
+                if (!isPalindrome(words[i])) {
+                    if (result.length > 0) result += " ";
+                    result += words[i];
+                }
+            }
+            
             document.getElementById("outputText").innerText = result;
         }
+        
     </script>
 </body>
 </html>

@@ -1,39 +1,4 @@
-// File: NumbericRightAngleTrianglePattern.js
 
-function generatePattern(n) {
-    let pattern = "";
-    for (let i = 1; i <= n; i++) {
-        // Print spaces
-        for (let j = i; j < n; j++) {
-            pattern += "  ";
-        }
-        // Print numbers in decreasing order
-        for (let j = i; j >= 1; j--) {
-            pattern += j + " ";
-        }
-        pattern += "\n";
-    }
-    return pattern;
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("patternForm");
-    const output = document.getElementById("output");
-
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const n = parseInt(document.getElementById("numberInput").value);
-        if (isNaN(n) || n <= 0) {
-            output.textContent = "Please enter a valid positive number.";
-            return;
-        }
-        output.textContent = generatePattern(n);
-    });
-});
-
-// File: index.html
-
-/*
 <!DOCTYPE html>
 <html lang="en">
 <head>

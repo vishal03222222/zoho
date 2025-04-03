@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Ray Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(3, 50px); gap: 2px; margin: 20px auto; width: fit-content; }
+        .cell { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 1px solid black; }
+        .atom { background-color: orange; }
+        .hit { background-color: red; color: white; }
+    </style>
+</head>
+<body>
+    <h2>Matrix Ray Game</h2>
+    <div class="grid" id="gameGrid"></div>
+    <button onclick="processRays()">Process Rays</button>
+    
+    <script>
+        var grid = [
+            ['-', '-', '-'],
+            ['-', '-', '-'],
+            ['-', '-', '-']
+        ];
+
+        var atoms = [ [2, 0], [1, 1], [0, 2] ]; // Predefined atom positions
+        var rays = [ [2, 0, 2] ]; // Predefined rays format: [row, startCol, endCol]
+
+        function placeAtoms() {
+            for (var i = 0; i < atoms.length; i++) {
+                var r = atoms[i][0];
+                var c = atoms[i][1];
+                grid[r][c] = 'X';
+            }
+        }
+
+        function processRays() {
+            for (var i = 0; i < rays.length; i++) {
+                var r = rays[i][0];
+                var startC = rays[i][1];
+                var endC = rays[i][2];
+                
+                for (var c = startC; c <= endC; c++) {
+                    if (grid[r][c] === 'X') {
+                        grid[r][c] = 'H';
+                        break;
+                    }
+                }
+            }
+            renderGrid();
+        }
+
+        function renderGrid() {
+            var gridHtml = '';
+            for (var r = 0; r < 3; r++) {
+                for (var c = 0; c < 3; c++) {
+                    var className = grid[r][c] === 'X' ? 'atom' : grid[r][c] === 'H' ? 'hit' : '';
+                    gridHtml += "<div class='cell " + className + "'>" + grid[r][c] + "</div>";
+                }
+            }
+            document.getElementById('gameGrid').innerHTML = gridHtml;
+        }
+
+        placeAtoms();
+        renderGrid();
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Taxi Booking Application</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { width: 50%; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Call Taxi Booking Application</h2>
+        <button onclick="bookTaxi()">Book a Taxi</button>
+        <button onclick="displayTaxiDetails()">Display Taxi Details</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        let taxis = [
+            { id: 1, position: 'A', earnings: 0, bookings: [] },
+            { id: 2, position: 'A', earnings: 0, bookings: [] },
+            { id: 3, position: 'A', earnings: 0, bookings: [] },
+            { id: 4, position: 'A', earnings: 0, bookings: [] }
+        ];
+        let bookings = [];
+        let points = ['A', 'B', 'C', 'D', 'E', 'F'];
+        let customerId = 1;
+        let bookingId = 1;
+
+        function bookTaxi() {
+            let pickup = prompt("Enter Pickup Point (A-F):").toUpperCase();
+            let drop = prompt("Enter Drop Point (A-F):").toUpperCase();
+            let pickupTime = parseInt(prompt("Enter Pickup Time (Hour):"));
+            
+            if (!validatePoints(pickup, drop)) {
+                alert("Invalid Pickup or Drop Point!");
+                return;
+            }
+
+            let distance = (points.indexOf(drop) - points.indexOf(pickup)) * 15;
+            let amount = 100 + (distance - 5) * 10;
+            if (distance <= 5) amount = 100;
+            
+            let taxi = allocateTaxi(pickup);
+            if (!taxi) {
+                alert("No taxi available!");
+                return;
+            }
+
+            taxi.position = drop;
+            taxi.earnings += amount;
+            let dropTime = pickupTime + (distance / 15);
+            let booking = { id: bookingId++, customerId: customerId++, pickup, drop, pickupTime, dropTime, amount };
+            taxi.bookings.push(booking);
+            bookings.push(booking);
+            alert(`Taxi-${taxi.id} is allotted.\nBooking ID: ${booking.id}`);
+        }
+
+        function allocateTaxi(pickup) {
+            let availableTaxi = null;
+            for (let i = 0; i < taxis.length; i++) {
+                if (taxis[i].position === pickup) {
+                    if (!availableTaxi || taxis[i].earnings < availableTaxi.earnings) {
+                        availableTaxi = taxis[i];
+                    }
+                }
+            }
+            if (!availableTaxi) {
+                let nearestTaxi = null;
+                let minDistance = Number.MAX_VALUE;
+                for (let i = 0; i < taxis.length; i++) {
+                    let taxiPositionIndex = points.indexOf(taxis[i].position);
+                    let pickupIndex = points.indexOf(pickup);
+                    let distance = Math.abs(taxiPositionIndex - pickupIndex);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearestTaxi = taxis[i];
+                    }
+                }
+                availableTaxi = nearestTaxi;
+            }
+            return availableTaxi;
+        }
+
+        function validatePoints(pickup, drop) {
+            let pickupIndex = -1, dropIndex = -1;
+            for (let i = 0; i < points.length; i++) {
+                if (points[i] === pickup) pickupIndex = i;
+                if (points[i] === drop) dropIndex = i;
+            }
+            return pickupIndex !== -1 && dropIndex !== -1 && pickupIndex < dropIndex;
+        }
+
+        function displayTaxiDetails() {
+            let output = "<h3>Taxi Details</h3><table><tr><th>Taxi</th><th>Total Earnings</th></tr>";
+            for (let i = 0; i < taxis.length; i++) {
+                output += `<tr><td>Taxi-${taxis[i].id}</td><td>Rs. ${taxis[i].earnings}</td></tr>`;
+            }
+            output += "</table><h3>Booking Details</h3><table><tr><th>Booking ID</th><th>Customer ID</th><th>From</th><th>To</th><th>Pickup Time</th><th>Drop Time</th><th>Amount</th></tr>";
+            for (let i = 0; i < bookings.length; i++) {
+                output += `<tr>
+                    <td>${bookings[i].id}</td>
+                    <td>${bookings[i].customerId}</td>
+                    <td>${bookings[i].pickup}</td>
+                    <td>${bookings[i].drop}</td>
+                    <td>${bookings[i].pickupTime}</td>
+                    <td>${bookings[i].dropTime}</td>
+                    <td>Rs. ${bookings[i].amount}</td>
+                </tr>`;
+            }
+            output += "</table>";
+            document.getElementById("output").innerHTML = output;
+        }
+    </script>
+</body>
+</html>
