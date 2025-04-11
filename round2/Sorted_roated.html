@@ -17,7 +17,7 @@
             while (i <= j) {
                 let mid = Math.floor((i + j) / 2);
                 if (arr[mid] === target) {
-                    return `Founded at the index of: ${mid}`;
+                    return `Founded at the  index of: ${mid}`;
                 }
                 if (arr[i] <= arr[mid]) {
                     if (target >= arr[i] && target <= arr[mid]) {
@@ -37,6 +37,7 @@
         }
 
         const arr = [23, 34, 45, 66, 77, 1, 12];
+        console.log(arr.sort())
         const target =45;
         document.getElementById("result").innerText = findingValue(arr, target);
     </script>

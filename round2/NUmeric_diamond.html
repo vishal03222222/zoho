@@ -11,42 +11,54 @@
 </head>
 <body>
     <pre id="app"></pre>
-    <script >
-        function generateDiamondPattern(n) {
-            let output = "";
-            let count = 0;
-            
-            // Upper half
-            for (let i = 1; i <= n; i++) {
-                output += "&nbsp;".repeat((n - i) * 2);
-                count += i;
-                for (let j = 1; j <= i; j++) {
-                    output += count + " ";
-                    if (j < i) count--; 
-                    else count += i - 1;
-                }
-                output += "<br>";
-            }
-            
-            // Lower half
-            for (let i = 1; i <= n; i++) {
-                output += "&nbsp;".repeat((i - 1) * 2);
-                for (let j = i; j <= n; j++) {
-                    output += count + " ";
-                    count--;
-                }
-                output += "<br>";
-            }
-            
-            return output;
-        }
-        
-        // Render pattern
-        window.onload = function() {
-            const app = document.getElementById("app");
-            const pattern = generateDiamondPattern(4);
-            app.innerHTML = pattern;
-        };
-    </script>
+   <script>
+    let n = 4;
+let count = 0;
+
+// Upper triangle (including middle row)
+for (let i = 1; i <= n; i++) {
+    let line = "";
+
+    // Add spaces
+    for (let j = i; j < n; j++) {
+        line += " ";
+    }
+
+    // Calculate count start for the row
+    count += i;
+
+    // Print descending numbers in the row
+    let temp = count;
+    for (let j = 1; j <= i; j++) {
+        line += temp + " ";
+        if (j < i) temp--;
+        else count += i - 1;
+    }
+
+    console.log(line.trimEnd());
+}
+
+// Reset count to 10 (last number printed from above)
+count = 10;
+
+// Lower triangle
+for (let i = 1; i <= n; i++) {
+    let line = "";
+
+    // Add leading spaces
+    for (let j = 1; j < i; j++) {
+        line += " ";
+    }
+
+    // Print descending numbers
+    for (let j = i; j <= n; j++) {
+        line += count + " ";
+        count--;
+    }
+
+    console.log(line.trimEnd());
+} 
+
+   </script>
 </body>
 </html>
